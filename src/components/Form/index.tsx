@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import { IForm } from "../../interfaces";
-// import { useState } from "react";
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 import './style.css'
-import api from "../../services/api";
+import { useApp } from "../../context";
+
 
 const Form = () => {
+
+  const {onSubmit} = useApp()
   
   const formSchema = yup.object().shape({
     amount: yup
@@ -16,7 +18,8 @@ const Form = () => {
     installments: yup
             .string()
             .required('É obrigatório')
-            .matches(/^\d*\.?\d+$/, "Deve conter apenas números positivos"),
+            .matches(/^\d*\.?\d+$/, "Deve conter apenas números positivos")
+            .max(2, 'No máximo 12 parcelas.'),
     mdr: yup
             .string()
             .required('É obrigatório')
@@ -29,9 +32,10 @@ const Form = () => {
 
 
   const handleSubmitForm = async (data: IForm) => {
+    const dayNumber = data.days!.filter(day => +day > 0)
     const amountInCents = (+data.amount*100) 
-    const data_number = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr}
-    await api.post('/', data_number).then(res => console.log(res)).catch(err => console.log(err))
+    const dataNumber = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr, days: dayNumber.length ? dayNumber : undefined}
+    onSubmit(dataNumber)
   };
 
   return (
@@ -73,6 +77,34 @@ const Form = () => {
         {...register('mdr')}
         />
       <p>{errors.mdr?.message}</p>
+
+      <label htmlFor="days" className="label">
+        Informe o(s) dia(s) 
+      </label>
+      <input
+        type="number"
+        id="days"
+        placeholder="R$"
+        className="input"
+        {...register('days.0')}
+        />
+
+      <input
+        type="number"
+        id="days"
+        placeholder="R$"
+        className="input"
+        {...register('days.1')}
+        />
+
+      <input
+        type="number"
+        id="days"
+        placeholder="R$"
+        className="input"
+        {...register('days.2')}
+        />
+
 
       <input className="input-invisible" type="submit" value='Enviar'/>
       
