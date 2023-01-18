@@ -1,12 +1,16 @@
-import './App.css';
 import CardAmount from './components/CardAmount';
 import Form from './components/Form'; 
+import GlobalStyle from './styles/global';
+import { ContainerStyled } from './styles/style';
 
 function App() {
   return (
     <>
-      <Form/>  
-      <CardAmount/>
+      <GlobalStyle/>
+      <ContainerStyled>
+        <Form/>  
+        <CardAmount/>
+      </ContainerStyled>
     </>
   );
 }

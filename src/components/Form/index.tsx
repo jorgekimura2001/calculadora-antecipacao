@@ -2,14 +2,15 @@ import { useForm } from "react-hook-form";
 import { IForm } from "../../interfaces";
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
-import './style.css'
+import './style.ts'
 import { useApp } from "../../context";
+import { ContainerStyled } from "./style";
 
 
 const Form = () => {
 
-  const {onSubmit} = useApp()
-  
+  const {onSubmit, isClick, setIsClick} = useApp()
+
   const formSchema = yup.object().shape({
     amount: yup
             .string()
@@ -32,26 +33,37 @@ const Form = () => {
 
 
   const handleSubmitForm = async (data: IForm) => {
-    const dayNumber = data.days!.filter(day => +day > 0)
-    const amountInCents = (+data.amount*100) 
-    const dataNumber = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr, days: dayNumber.length ? dayNumber : undefined}
-    onSubmit(dataNumber)
+    if (data.days !== undefined){
+      const dayNumber = data.days.filter(day => +day > 0)
+      const amountInCents = (+data.amount*100)
+      const dataNumber = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr, days: dayNumber}
+      onSubmit(dataNumber)
+    }else{
+      const amountInCents = (+data.amount*100) 
+      console.log(amountInCents) 
+      const dataNumber = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr}
+      onSubmit(dataNumber)
+    }
   };
 
   return (
-  <>
+  <ContainerStyled>
+    <h1>Simule sua Antecipação</h1>
     <form onSubmit={handleSubmit(handleSubmitForm)}>
       <label htmlFor="amount" className="label">
         Informe o valor da venda *
       </label>
-      <input
-        type="number"
-        id="amount"
-        placeholder="R$"
-        className="input"
-        {...register('amount')}
-        />
-      <p>{errors.amount?.message}</p>
+      <div>
+        <span className="amount">R$</span>
+        <input
+          type="string"
+          id="amount"
+          placeholder="Ex: 250.55"
+          className="input"
+          {...register('amount')}
+          />
+        <p>{errors.amount?.message}</p>
+      </div>
 
       <label htmlFor="installments" className="label">
         Em quantas parcelas *
@@ -59,11 +71,11 @@ const Form = () => {
       <input
         type="number"
         id="installments"
-        placeholder="R$"
+        placeholder="Ex: 10"
         className="input"
         {...register('installments')}
         />
-      <span>Máximo de 12 parcelas</span>
+      <span className="max">Máximo de 12 parcelas</span>
       <p>{errors.installments?.message}</p>
 
       <label htmlFor="mdr" className="label">
@@ -72,44 +84,55 @@ const Form = () => {
       <input
         type="number"
         id="mdr"
-        placeholder="R$"
+        placeholder="Ex: 4"
         className="input"
         {...register('mdr')}
         />
       <p>{errors.mdr?.message}</p>
 
-      <label htmlFor="days" className="label">
-        Informe o(s) dia(s) 
-      </label>
-      <input
-        type="number"
-        id="days"
-        placeholder="R$"
-        className="input"
-        {...register('days.0')}
-        />
+      {
+        isClick && 
+      <>
+        <label htmlFor="days" className="label">
+          Informe o(s) dia(s) 
+        </label>
+        <div className="days">
+          <input
+            type="number"
+            id="days"
+            placeholder="Ex: 5"
+            className="input-day"
+            {...register('days.0')}
+            />
 
-      <input
-        type="number"
-        id="days"
-        placeholder="R$"
-        className="input"
-        {...register('days.1')}
-        />
+          <input
+            type="number"
+            id="days"
+            placeholder="Ex: 10"
+            className="input-day"
+            {...register('days.1')}
+            />
 
-      <input
-        type="number"
-        id="days"
-        placeholder="R$"
-        className="input"
-        {...register('days.2')}
-        />
-
-
+          <input
+            type="number"
+            id="days"
+            placeholder="Ex: 200"
+            className="input-day"
+            {...register('days.2')}
+            />
+        </div>
+      </>
+      }
       <input className="input-invisible" type="submit" value='Enviar'/>
       
     </form>
-  </>
+
+    <button className="btn-days" onClick={() => setIsClick(!isClick)}>
+      {
+        isClick ? 'Cancelar' : 'Gostaria de informar o(s) dia(s) do recebimento?'
+      }
+    </button>
+  </ContainerStyled>
   );
 };
 

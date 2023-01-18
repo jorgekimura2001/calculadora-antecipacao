@@ -10,6 +10,8 @@ const AppProvider = ({children}: IChildren) => {
 
     const [values, setValues] = useState({})
 
+    const [isClick, setIsClick] = useState(false)
+
     const onSubmit = async (dataTreated: IForm): Promise<void> => {
         await api
                 .post('/', dataTreated)
@@ -21,7 +23,7 @@ const AppProvider = ({children}: IChildren) => {
     }
 
     return (
-        <AppContext.Provider value={{values, onSubmit}}>
+        <AppContext.Provider value={{values, onSubmit, isClick, setIsClick}}>
             {children}
         </AppContext.Provider>
     )

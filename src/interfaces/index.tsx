@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface IForm{
     amount: number;
@@ -13,5 +13,7 @@ export interface IChildren{
 
 export interface IContextProps{
 	values: {};
-	onSubmit: (dataTreated: IForm) => Promise<void>
+	onSubmit: (dataTreated: IForm) => Promise<void>;
+	isClick: boolean;
+	setIsClick: Dispatch<SetStateAction<boolean>>;
 }
