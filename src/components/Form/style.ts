@@ -37,6 +37,7 @@ export const ContainerStyled = styled.div`
         label{
             font-size: 14px;
             color: var(--color-grey-3);
+            margin-bottom: 6px;
         }
 
         input{
