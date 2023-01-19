@@ -4,7 +4,7 @@ export interface IForm{
     amount: number;
 	installments: number;
 	mdr: number;
-	days?: number[]
+	days?: string[]
 }
 
 export interface IChildren{
@@ -12,7 +12,7 @@ export interface IChildren{
 }
 
 export interface IContextProps{
-	values: {};
+	values: Array<{}>;
 	onSubmit: (dataTreated: IForm) => Promise<void>;
 	isClick: boolean;
 	isLoading: boolean;

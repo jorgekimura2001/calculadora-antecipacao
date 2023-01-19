@@ -8,23 +8,40 @@ export const useApp = () => { return useContext(AppContext) }
 
 const AppProvider = ({children}: IChildren) => {
 
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState<Array<{}>>([])
 
     const [isClick, setIsClick] = useState(false)
 
     const [isLoading, setIsLoading] = useState(true)
 
     const onSubmit = async (dataTreated: IForm): Promise<void> => {
-        // setIsLoading(true)
+
+        console.log(dataTreated)
+        let newValue: Array<{}> = []
         await api
                 .post('/', dataTreated)
                 .then(async (res) => {
-                    const {data} = res
-                    setValues(data)
-                    setIsLoading(false)
+                    if (dataTreated.days === undefined){
+                        const {data} = res
+                        for(let key in data){
+                            newValue.push({[key]: data[key]})
+                        }
+
+                        setValues([...newValue])
+                        setIsLoading(false)
+                    }else{
+                        const {data} = res
+                        for(let key in data){
+                            newValue.push({[key]: data[key]})
+                        }
+                        const newValues = newValue.map((elem) => elem)
+                        setValues([...newValues])
+                        setIsLoading(false)
+                    }
                 })
                 .catch(err => console.log(err))
     }
+
 
     return (
         <AppContext.Provider value={{values, onSubmit, isClick, setIsClick, isLoading}}>

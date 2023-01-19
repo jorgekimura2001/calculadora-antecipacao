@@ -71,11 +71,12 @@ export const ContainerStyled = styled.div`
         p{
             color: var(--color-error);
             font-size: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .input-day{
             width: 63px;
+            height: 15px;
         }
 
         .days{
