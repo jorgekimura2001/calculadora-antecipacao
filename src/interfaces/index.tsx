@@ -15,5 +15,6 @@ export interface IContextProps{
 	values: {};
 	onSubmit: (dataTreated: IForm) => Promise<void>;
 	isClick: boolean;
+	isLoading: boolean;
 	setIsClick: Dispatch<SetStateAction<boolean>>;
 }

@@ -34,13 +34,15 @@ const Form = () => {
 
   const handleSubmitForm = async (data: IForm) => {
     if (data.days !== undefined){
-      const dayNumber = data.days.filter(day => +day > 0)
+      let dayNumber = data.days.filter(day => day.toString() !== '' && day.toString() !== '0')
+      if (dayNumber.length === 0){
+        dayNumber = [1, 15, 30, 90]
+      }
       const amountInCents = (+data.amount*100)
       const dataNumber = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr, days: dayNumber}
       onSubmit(dataNumber)
     }else{
       const amountInCents = (+data.amount*100) 
-      console.log(amountInCents) 
       const dataNumber = {amount: amountInCents, installments: +data.installments, mdr: +data.mdr}
       onSubmit(dataNumber)
     }
