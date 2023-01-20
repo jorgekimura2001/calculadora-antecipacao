@@ -2,7 +2,7 @@ import { useApp } from "../../context";
 import { ContainerStyled } from "./style";
 
 const CardAmount = () => {
-  const { values, isLoading, isClick} = useApp();
+  const { values, isLoading} = useApp();
   
   let valuesToRenderOne: {}[] = values.filter(elem => {
     const valueNumber = [...Object.keys(elem)].join()

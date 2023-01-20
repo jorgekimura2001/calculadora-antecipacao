@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         font-family: 'Source Sans Pro', sans-serif;
     }
-    /* HTML5 display-role reset for older browsers */
+
     article, aside, figcaption, figure, 
     footer, header, nav, section {
         display: block;

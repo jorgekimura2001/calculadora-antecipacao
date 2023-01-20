@@ -16,7 +16,6 @@ const AppProvider = ({children}: IChildren) => {
 
     const onSubmit = async (dataTreated: IForm): Promise<void> => {
 
-        console.log(dataTreated)
         let newValue: Array<{}> = []
         await api
                 .post('/', dataTreated)
